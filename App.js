@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Contact from './components/Kontak';
 import ContactDetail from './components/ContactDetails';
 
 const Stack = createStackNavigator();
@@ -91,15 +90,28 @@ const contacts = [
 ];
 
 function HomeScreen({ navigation }) {
+  const handleContactPress = (contact) => {
+    navigation.navigate('ContactDetail', { contact });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>My Contacts</Text>
       </View>
       {contacts.map((contact, index) => (
-        <TouchableOpacity key={index} onPress={() => navigation.navigate('ContactDetail', { contact })}>
-          <Contact {...contact} />
-        </TouchableOpacity>
+        <View key={index} style={styles.contactContainer}>
+          <Image source={contact.image} style={styles.contactImage} />
+          <View style={styles.contactInfo}>
+            <Text style={styles.contactName}>{contact.name}</Text>
+            <Text style={styles.contactPhone}>{contact.phone}</Text>
+          </View>
+          <Button
+            title="View Details"
+            color="#3498db"
+            onPress={() => handleContactPress(contact)}
+          />
+        </View>
       ))}
     </View>
   );
@@ -109,8 +121,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ContactDetail" component={ContactDetail} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ContactDetail" component={ContactDetail} options={{ title: 'Contact Details' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -131,5 +143,31 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  contactContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+  },
+  contactImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+  contactInfo: {
+    flex: 1,
+  },
+  contactName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  contactPhone: {
+    fontSize: 16,
+    color: '#555',
   },
 });
