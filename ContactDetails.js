@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Linking, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Linking, Button, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function ContactDetail({ route }) {
+export default function ContactDetail({ route, navigation }) {
   const { contact } = route.params;
 
   // Fungsi untuk menavigasi ke URL LinkedIn
@@ -44,27 +44,31 @@ export default function ContactDetail({ route }) {
           <Icon name="map-marker" size={24} color="#3498db" style={styles.icon} />
           <Text style={[styles.detail, { textAlign: 'center' }]}>Address: {contact.address}</Text>
         </View>
-        {/* Ikon Email */}
         <View style={styles.iconRow}>
-          <Icon name="envelope" size={24} color="#3498db" />
+          <Icon name="envelope" size={24} color="#3498db" style={styles.icon} />
           <Text style={[styles.link, { textAlign: 'center' }]} onPress={handleEmailPress}>
             {contact.email}
           </Text>
         </View>
-        {/* Ikon Instagram */}
         <View style={styles.iconRow}>
-          <Icon name="instagram" size={24} color="#E1306C" />
+          <Icon name="instagram" size={24} color="#E1306C" style={styles.icon} />
           <Text style={[styles.link, { textAlign: 'center' }]} onPress={handleInstagramPress}>
             @{contact.instagram}
           </Text>
         </View>
-        {/* Ikon LinkedIn */}
         <View style={styles.iconRow}>
-          <Icon name="linkedin" size={24} color="#0077B5" />
+          <Icon name="linkedin" size={24} color="#0077B5" style={styles.icon} />
           <Text style={[styles.link, { textAlign: 'center' }]} onPress={handleLinkedInPress}>
             {contact.linkedin}
           </Text>
         </View>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Back"
+          onPress={() => navigation.goBack()}
+          color="#3498db"
+        />
       </View>
     </View>
   );
@@ -74,8 +78,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start', // Mengatur konten dari bagian atas layar
+    justifyContent: 'flex-start',
     padding: 20,
+  },
+  buttonContainer: {
+    alignSelf: 'center',
+    marginBottom: 20,
   },
   profileContainer: {
     alignItems: 'center',
